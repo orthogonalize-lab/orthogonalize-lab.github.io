@@ -15,6 +15,25 @@
     30%  { opacity: 1.0;  text-shadow: 0 0 14px #b300ff; }
     100% { opacity: 0.92; text-shadow: 0 0 8px #b300ff; }
 }
+/* CRT scanline overlay */
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.05) 0px,
+        rgba(0,0,0,0.05) 1px,
+        transparent 2px,
+        transparent 3px
+    );
+    z-index: 5;
+}
+
 
 .title, .tagline {
     animation: textFlicker 0.12s infinite alternate;
