@@ -4,6 +4,22 @@
 <meta charset="UTF-8">
 <title>Orthogonalize Lab</title>
 <style>
+/* CRT flicker effect */
+@keyframes textFlicker {
+    0%   { opacity: 0.92; text-shadow: 0 0 8px #b300ff; }
+    5%   { opacity: 0.75; text-shadow: 0 0 3px #b300ff; }
+    10%  { opacity: 0.95; text-shadow: 0 0 12px #b300ff; }
+    15%  { opacity: 0.60; text-shadow: 0 0 2px #b300ff; }
+    20%  { opacity: 0.98; text-shadow: 0 0 10px #b300ff; }
+    25%  { opacity: 0.70; text-shadow: 0 0 4px #b300ff; }
+    30%  { opacity: 1.0;  text-shadow: 0 0 14px #b300ff; }
+    100% { opacity: 0.92; text-shadow: 0 0 8px #b300ff; }
+}
+
+.title, .tagline {
+    animation: textFlicker 0.12s infinite alternate;
+}
+
 html, body {
     margin: 0;
     padding: 0;
