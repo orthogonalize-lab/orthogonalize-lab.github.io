@@ -27,10 +27,9 @@
 
     .title {
         position: absolute;
-        top: 50%;
+        top: 6%; /* moved above the line */
         width: 100%;
         text-align: center;
-        transform: translateY(-50%);
         color: #b300ff; /* ELECTRIC PURPLE */
         font-size: 48px;
         font-weight: bold;
@@ -40,7 +39,7 @@
 
     .tagline {
         position: absolute;
-        top: calc(50% + 60px);
+        top: 13%; /* also above the line */
         width: 100%;
         text-align: center;
         color: #b300ff;
@@ -192,122 +191,25 @@ window.addEventListener("resize", resize);
 // Map time index to x, normalized price to y
 function getPoint(i) {
     const x = (i / (normP.length - 1)) * w;
-    const yBase = hpx * (0.2 + 0.6 * (1 - normP[i])); // 20%–80% vertical band
+    const yBase = hpx * (0.25 + 0.55 * (1 - normP[i])); // shifted down slightly
     return { x, y: yBase };
 }
 
 // Particles
 const particles = [];
-const MAX_PARTICLES = 1200;
+const MAX_PARTICLES = 1500;
 
 function spawnParticles(i, count) {
     const base = getPoint(i);
     const vol = normH[i];
-    const radius = Math.sqrt(vol) * 80; // h^0.5 scaling
+    const radius = Math.sqrt(vol) * 90; // h^0.5 scaling
 
     for (let k = 0; k < count; k++) {
         if (particles.length >= MAX_PARTICLES) break;
 
-        // Random angle around the line (full circle, but we can bias later)
         const angle = Math.random() * Math.PI * 2;
-        const speed = radius * (0.4 + Math.random() * 0.6);
+        const speed = radius * (1.2 + Math.random() * 1.0); // MUCH faster
 
         particles.push({
-            x: base.x + (Math.random() - 0.5) * 6, // slight horizontal jitter
-            y: base.y + (Math.random() - 0.5) * 6, // slight vertical jitter
-            vx: Math.cos(angle) * speed,
-            vy: Math.sin(angle) * speed,
-            life: 1.0,
-            vol: vol
-        });
-    }
-}
-
-let t = 0;
-
-function animate() {
-    // Faint trail to keep storm feel
-    ctx.fillStyle = "rgba(0,255,102,0.18)";
-    ctx.fillRect(0, 0, w, hpx);
-
-    // Current time index
-    const speed = 0.6; // visual time speed
-    const idxFloat = (t * speed) % (normP.length - 1);
-    const i0 = Math.floor(idxFloat);
-    const i1 = i0 + 1;
-    const frac = idxFloat - i0;
-
-    // Interpolate along the line
-    const p0 = getPoint(i0);
-    const p1 = getPoint(i1);
-    const x = p0.x + (p1.x - p0.x) * frac;
-    const yBase = p0.y + (p1.y - p0.y) * frac;
-
-    // Glitchy neon line: draw full path with jitter
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = "rgba(179,0,255,0.9)";
-    ctx.beginPath();
-    for (let i = 0; i < normP.length - 1; i++) {
-        const pt = getPoint(i);
-        // medium glitch: ±2px vertical jitter
-        const gy = pt.y + (Math.random() - 0.5) * 4;
-        if (i === 0) ctx.moveTo(pt.x, gy);
-        else ctx.lineTo(pt.x, gy);
-    }
-    ctx.stroke();
-
-    // Outer glow for the line
-    ctx.lineWidth = 6;
-    ctx.strokeStyle = "rgba(179,0,255,0.25)";
-    ctx.beginPath();
-    for (let i = 0; i < normP.length - 1; i++) {
-        const pt = getPoint(i);
-        const gy = pt.y + (Math.random() - 0.5) * 6;
-        if (i === 0) ctx.moveTo(pt.x, gy);
-        else ctx.lineTo(pt.x, gy);
-    }
-    ctx.stroke();
-
-    // Volatility at current point
-    const vol = normH[i0];
-    const radius = Math.sqrt(vol) * 80;
-
-    // Spawn particles proportional to vol
-    const baseCount = 4;
-    const extra = Math.floor(vol * 40);
-    spawnParticles(i0, baseCount + extra);
-
-    // Draw particles
-    for (let i = particles.length - 1; i >= 0; i--) {
-        const p = particles[i];
-
-        p.x += p.vx * 0.016; // scale by ~frame time
-        p.y += p.vy * 0.016;
-
-        // Damping
-        p.vx *= 0.90;
-        p.vy *= 0.90;
-
-        // Fade out
-        p.life -= 0.015 + p.vol * 0.02;
-        if (p.life <= 0) {
-            particles.splice(i, 1);
-            continue;
-        }
-
-        const alpha = Math.max(0, p.life) * (0.4 + p.vol * 0.6);
-        ctx.fillStyle = `rgba(255,140,0,${alpha})`;
-        const size = 2 + 3 * Math.sqrt(p.vol);
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, size, 0, Math.PI * 2);
-        ctx.fill();
-    }
-
-    t += 0.016;
-    requestAnimationFrame(animate);
-}
-
-requestAnimationFrame(animate);
-</script>
-</body>
-</html>
+            x: base.x + (Math.random() - 0.5) * 4,
+            y
