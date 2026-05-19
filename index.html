@@ -206,15 +206,11 @@ const normP = prices.map(p => (p - minP) / (maxP - minP));
 // EWMA volatility
 const h = new Array(prices.length).fill(0);
 let hPrev = 0;
-//for (let i = 1; i < prices.length; i++) {
- //   const r = Math.abs(prices[i] - prices[i - 1]);
-  //  h[i] = 0.1 * r + 0.8 * hPrev;
-   // hPrev = h[i];
-//}
 for (let i = 1; i < prices.length; i++) {
     const r = prices[i] - prices[i - 1];   // raw return
     const r2 = r * r;                      // squared return
-    h[i] = 0.1 * r2 + 0.8 * hPrev;         // EWMA update
+    const alpha = 0.2;                     // prior for volatility
+    h[i] = alpha + 0.1 * r2 + 0.8 * hPrev; // EWMA update
     hPrev = h[i];
 }
 const maxH = Math.max(...h);
