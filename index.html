@@ -1,5 +1,8 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<title>Orthogonalize Lab</title>
 <style>
 html, body {
     margin: 0;
@@ -42,7 +45,6 @@ html, body {
     text-shadow: 0 0 8px #b300ff;
     pointer-events: none;
 }
-
 </style>
 </head>
 
@@ -52,8 +54,6 @@ html, body {
 <canvas id="canvas"></canvas>
 
 <script>
-
-
 // === PRICE DATA ===
 const prices = [
 2.0733932410325444,2.319435127881449,2.5952939581792975,2.717014305898491,
@@ -171,7 +171,7 @@ for (let i = 1; i < prices.length; i++) {
 const maxH = Math.max(...h);
 const normH = h.map(v => v / maxH);
 
-// Canvas
+// Canvas setup
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 let W, H;
@@ -216,9 +216,7 @@ function spawn(i, count) {
     }
 }
 
-    }
-}
-
+// Draw glitchy line
 function drawLine() {
     ctx.lineWidth = 2;
     ctx.strokeStyle = "rgba(179,0,255,0.9)";
@@ -226,7 +224,7 @@ function drawLine() {
 
     for (let i = 0; i < normP.length; i++) {
         const p = getPoint(i);
-        const gy = p.y + (Math.random() - 0.5) * 4; // glitch
+        const gy = p.y + (Math.random() - 0.5) * 4;
         if (i === 0) ctx.moveTo(p.x, gy);
         else ctx.lineTo(p.x, gy);
     }
@@ -244,6 +242,8 @@ function drawLine() {
     }
     ctx.stroke();
 }
+
+let t = 0;
 
 function animate() {
     // Faint trail for storm effect
@@ -289,14 +289,13 @@ function animate() {
         ctx.fill();
     }
 
-    t += 0.2; // speed of time progression
+    t += 0.2;
     requestAnimationFrame(animate);
 }
 
 requestAnimationFrame(animate);
-
 </script>
-
 
 </body>
 </html>
+
