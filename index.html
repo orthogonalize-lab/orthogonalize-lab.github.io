@@ -15,6 +15,7 @@
     30%  { opacity: 1.0;  text-shadow: 0 0 14px #b300ff; }
     100% { opacity: 0.92; text-shadow: 0 0 8px #b300ff; }
 }
+
 /* CRT scanline overlay */
 body::after {
     content: "";
@@ -34,7 +35,7 @@ body::after {
     z-index: 5;
 }
 
-
+/* Flicker animation applied to text */
 .title, .tagline {
     animation: textFlicker 0.12s infinite alternate;
 }
@@ -47,6 +48,7 @@ html, body {
     font-family: "DejaVu Sans Mono", "Liberation Mono", monospace;
     height: 100%;
     width: 100%;
+    position: relative;   /* ← CRITICAL FIX: ensures text stays above scanlines */
 }
 
 /* Canvas stays behind everything */
@@ -58,6 +60,7 @@ html, body {
     height: 100%;
     display: block;
     z-index: 1;
+    background: transparent;  /* ← ensures canvas doesn't hide text */
 }
 
 /* Text sits ABOVE the canvas */
